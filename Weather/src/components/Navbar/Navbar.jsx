@@ -6,10 +6,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { AppContext } from "../../utils/context";
+import { UserContext } from "../../utils/context";
 
 const Navbar = () => {
-  const { userDisplayName, updateUserDisplayName } = useContext(AppContext);
+  const { userDisplayName, updateUserDisplayName } = useContext(UserContext);
   const navigate = useNavigate();
   const handleLogOut = () => {
     localStorage.removeItem("user");

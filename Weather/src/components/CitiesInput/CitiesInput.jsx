@@ -1,14 +1,14 @@
 import axios from "axios";
 import styles from "./CitiesInput.module.css";
 import { useContext, useEffect, useRef, useState } from "react";
-import { AppContext } from "../../utils/context";
+import { UserContext, SearchContext } from "../../utils/context";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const CitiesInput = ({ handleSetLocation }) => {
-  const { username, updateusername } = useContext(AppContext);
-  const { misparIshi, updateMisparIshi } = useContext(AppContext);
-
+  const { username, updateusername } = useContext(UserContext);
+  const { misparIshi, updateMisparIshi } = useContext(UserContext);
+  const { lastSearches, updateLastSearches } = useContext(SearchContext);
   const [searchTerm, setSearchTerm] = useState("Jerusalem");
   const [cities, setCities] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -16,6 +16,7 @@ const CitiesInput = ({ handleSetLocation }) => {
 
   useEffect(() => {
     if (username && misparIshi) {
+      handleIconClick(searchTerm);
       handleSetCities();
     }
   }, [username, misparIshi]);
@@ -46,14 +47,18 @@ const CitiesInput = ({ handleSetLocation }) => {
 
   const handleIconClick = async () => {
     try {
-      const res = await axios.get(`http://localhost:3001/cities/${searchTerm}`, {
-        headers: {
-          user_name: username,
-          user_mispar_ishi: misparIshi,
-        },
-      });
+      const res = await axios.get(
+        `http://localhost:3001/cities/${searchTerm}`,
+        {
+          headers: {
+            user_name: username,
+            user_mispar_ishi: misparIshi,
+          },
+        }
+      );
       if (res.status === 200) {
         handleSetLocation(res.data, searchTerm);
+        updateLastSearches(searchTerm);
       }
     } catch (error) {
       console.error("Failed to fetch city data:", error);
