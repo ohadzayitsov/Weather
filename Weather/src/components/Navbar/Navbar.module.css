@@ -1,0 +1,30 @@
+.navBody {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  background-color: #ffffff;
+}
+.navTitle {
+    margin-left: 5%;
+  font-size: 25px;
+  color: #979797;
+  font-weight: bold;
+}
+
+.logOut {
+  cursor: pointer;
+  font-size: 25px;
+  color: #979797;
+}
+.username{
+    width:8rem;
+}
+.loggedIn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 5%;
+}

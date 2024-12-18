@@ -1,0 +1,72 @@
+.dropdownContainer {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 30rem;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+  }
+  
+  .searchInput {
+    width: 100%; 
+    height: 1.5rem;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    box-shadow: 1px 1px 2px 3px rgba(99, 98, 98, 0.1);
+  }
+  
+  .searchInput:focus {
+    outline: 2px rgb(142, 142, 238) solid;
+  }
+  
+  .optionsContainer {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%; 
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+  }
+  
+  .option {
+    padding: 10px 12px;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .option:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .noResult {
+    padding: 10px 12px;
+    color: #777;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .inputWithIcon {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+  }
+  
+  .searchIcon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    color: gray;
+    font-size: 1.2rem;
+  }
