@@ -3,12 +3,12 @@ import styles from "./Login.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { faL } from "@fortawesome/free-solid-svg-icons";
-import { AppContext } from "../../utils/context";
+import { UserContext } from "../../utils/context";
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [misparIshi, setmisparIshi] = useState("");
-  const { userDisplayName, updateUserDisplayName } = useContext(AppContext);
+  const { userDisplayName, updateUserDisplayName } = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState("");
 
 

@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./LandingPage.module.css";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../../utils/context";
+import { UserContext } from "../../utils/context";
 import axios from "axios";
 import WeatherForecast from "../WeatherForecast/WeatherForcast";
 import CitiesInput from "../../components/CitiesInput/CitiesInput";
 
 const LandingPage = () => {
-  const { userDisplayName, updateUserDisplayName } = useContext(AppContext);
-  const { misparIshi, updateMisparIshi } = useContext(AppContext);
-  const { username, updateUsername } = useContext(AppContext);
+  const { userDisplayName, updateUserDisplayName } = useContext(UserContext);
+  const { misparIshi, updateMisparIshi } = useContext(UserContext);
+  const { username, updateUsername } = useContext(UserContext);
   const [latlong, setLatLong] = useState("");
   const [city, setCity] = useState("");
   const navigate = useNavigate();

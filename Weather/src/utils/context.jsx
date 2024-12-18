@@ -1,8 +1,8 @@
 import React, { createContext, useState } from "react";
 
-export const AppContext = createContext();
+export const UserContext = createContext();
 
-export const AppProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
   const [userDisplayName, setUserDisplayName] = useState("");
   const [misparIshi, setMisparIshi] = useState("");
   const [username, setUsername] = useState("");
@@ -10,8 +10,9 @@ export const AppProvider = ({ children }) => {
   const updateUserDisplayName = (value) => setUserDisplayName(value);
   const updateMisparIshi = (value) => setMisparIshi(value);
   const updateUsername = (value) => setUsername(value);
+
   return (
-    <AppContext.Provider
+    <UserContext.Provider
       value={{
         userDisplayName,
         misparIshi,
@@ -22,6 +23,30 @@ export const AppProvider = ({ children }) => {
       }}
     >
       {children}
-    </AppContext.Provider>
+    </UserContext.Provider>
+  );
+};
+
+export const SearchContext = createContext();
+
+export const SearchProvider = ({ children }) => {
+  const [lastSearches, setLastSearches] = useState([]);
+
+  const updateLastSearches = (newSearch) => {
+    setLastSearches((prevSearches) => {
+      const updatedSearches = [newSearch, ...prevSearches];
+      return updatedSearches.slice(0, process.env.MAX_SEARCHES);
+    });
+  };
+
+  return (
+    <SearchContext.Provider
+      value={{
+        lastSearches,
+        updateLastSearches,
+      }}
+    >
+      {children}
+    </SearchContext.Provider>
   );
 };
