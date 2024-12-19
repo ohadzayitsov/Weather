@@ -1,0 +1,113 @@
+.darkBG {
+    background-color: rgba(0, 0, 0, 0.169);
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+  }
+  
+  .centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .modal {
+    width: 50rem;
+    height: 60rem;
+    background: white;
+    z-index: 10;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.04);
+  }
+  
+  .header{
+    padding:15px 15px 0px;
+    color: black;
+  }
+  
+ .hr{
+    border-top: 0.5px solid rgb(239, 239, 239);
+ }
+ .xIcon{
+    cursor: pointer;
+ }
+.madorSoldiers{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+}
+.madorTitle{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    
+}
+.title{
+    font-size: 30px;
+    font-weight: bold;
+}
+.inputContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.input{
+    width: 90%;
+    border: none;
+    text-align: right;
+    font-size: 18px;
+    outline: none;
+    color: rgb(77, 77, 77);
+    margin: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1.5px solid rgb(210, 210, 210);
+}
+.sexInput{
+    width: 90%;
+    border: none;
+    text-align: right;
+    font-size: 20px;
+    outline: none;
+    color: rgb(77, 77, 77);
+    margin: 10px;
+    padding-bottom: 20px;
+    
+}
+.addBtnDisabled{
+    width: 10rem;
+    height: 3rem;
+    border: 2px solid rgb(165, 162, 162);
+    font-size: 20px;
+    color: white;
+    background-color: rgb(194, 192, 192);
+    border-radius: 10px;
+    margin-left: 2rem;
+    cursor: not-allowed;
+    
+}
+.addBtn{
+    width: 10rem;
+    height: 3rem;
+    font-size: 20px;
+    color: white;
+    background-color: rgb(90, 124, 234);
+    border-radius: 10px;
+    margin-left: 2rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px 1px rgba(70, 69, 69, 0.162);
+}
+.addBtn:hover{
+    background-color: rgb(72, 96, 176);
+}
+.soldierContainer{
+    display: flex;
+    flex-direction: row;
+justify-content: right;
+}
