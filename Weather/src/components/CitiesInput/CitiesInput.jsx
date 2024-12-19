@@ -9,16 +9,30 @@ const CitiesInput = ({ handleSetLocation }) => {
   const { username, updateusername } = useContext(UserContext);
   const { misparIshi, updateMisparIshi } = useContext(UserContext);
   const { lastSearches, updateLastSearches } = useContext(SearchContext);
+  const { selectedSearch, updateSelectedSearch } = useContext(SearchContext);
   const [searchTerm, setSearchTerm] = useState("Jerusalem");
   const [cities, setCities] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (username && misparIshi) {
-      handleIconClick(searchTerm);
-      handleSetCities();
+    if (selectedSearch) {
+      setSearchTerm(selectedSearch.city);
     }
+  }, [selectedSearch]);
+  useEffect(() => {
+    if (cities.length > 0 && searchTerm) {
+      handleSelectCity();
+    }
+  }, [cities]);
+  useEffect(() => {
+    const fetchCities = async () => {
+      if (username && misparIshi) {
+        await handleSetCities();
+      }
+    };
+
+    fetchCities();
   }, [username, misparIshi]);
 
   const handleSetCities = async () => {
@@ -45,7 +59,7 @@ const CitiesInput = ({ handleSetLocation }) => {
     setIsDropdownVisible(false);
   };
 
-  const handleIconClick = async () => {
+  const handleSelectCity = async () => {
     try {
       const res = await axios.get(
         `http://localhost:3001/cities/${searchTerm}`,
@@ -58,10 +72,20 @@ const CitiesInput = ({ handleSetLocation }) => {
       );
       if (res.status === 200) {
         handleSetLocation(res.data, searchTerm);
-        updateLastSearches(searchTerm);
+        const city = cities.find((city) => city.city === searchTerm);
+
+        if (city) {
+          updateLastSearches(city);
+          updateSelectedSearch(city);
+        }
       }
     } catch (error) {
       console.error("Failed to fetch city data:", error);
+    }
+  };
+  const handleIconClick = async () => {
+    if (searchTerm !== selectedSearch.city) {
+      handleSelectCity();
     }
   };
 

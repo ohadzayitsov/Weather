@@ -1,12 +1,12 @@
 import styles from "./WeatherForcast.module.css";
 import WeatherCard from "../../components/WeatherCard/WeatherCard";
 import ChosenDay from "../../components/chosenDay/chosenDay";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { SearchContext, WeatherContext } from "../../utils/context";
 
 const WeatherForecast = ({ latlong, city }) => {
-  const [days, setDays] = useState([]);
-
+  const { dailyWeather, updateDailyWeather } = useContext(WeatherContext);
   useEffect(() => {
     const fetchWeather = async () => {
       try {
@@ -14,17 +14,22 @@ const WeatherForecast = ({ latlong, city }) => {
           `https://api.openweathermap.org/data/3.0/onecall?lat=${latlong.latitude}&lon=${latlong.longitude}&units=metric&appid=${process.env.ONE_CALL_API_KEY}&exclude=minutely,hourly,alerts&lang=he`
         );
         if (res.status === 200) {
-          setDays(res.data.daily);
+
+          updateDailyWeather({ city: city, days: res.data.daily });
         }
       } catch (error) {
         console.log("error: " + error.message);
       }
     };
-
-    fetchWeather();
+    if (dailyWeather.days.length === 0 || dailyWeather.city !== city) {
+      fetchWeather();
+    }
   }, [latlong, city]);
 
   const getIcon = (day) => {
+    if (!day) {
+      return;
+    }
     let icon;
     if (day.temp.day > 29) {
       icon = "sunny";
@@ -86,18 +91,18 @@ const WeatherForecast = ({ latlong, city }) => {
 
   return (
     <div className={styles.body}>
-      {days[0] ? (
+      {dailyWeather.days[0] ? (
         <div>
           <ChosenDay
-            icon={getIcon(days[0])}
-            day={getHebrewDayDescription(days[0].dt)}
-            desc={days[0].weather[0].description}
-            temp={getTemp(days[0].temp)}
+            icon={getIcon(dailyWeather.days[0])}
+            day={getHebrewDayDescription(dailyWeather.days[0].dt)}
+            desc={dailyWeather.days[0].weather[0].description}
+            temp={getTemp(dailyWeather.days[0].temp)}
             city={city}
-            backgroundColor={getBackgroundColor(days[0])}
+            backgroundColor={getBackgroundColor(dailyWeather.days[0])}
           />
           <div className={styles.forecastContainer}>
-            {days.map((day, index) =>
+            {dailyWeather.days.map((day, index) =>
               0 < index && index < 5 ? (
                 <WeatherCard
                   day={getHebrewDayDescription(day.dt)}

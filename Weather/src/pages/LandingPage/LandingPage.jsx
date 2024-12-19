@@ -24,7 +24,7 @@ const LandingPage = () => {
 
       const user = JSON.parse(userString);
 
-      if (user) {
+      if (user && (!username || !misparIshi)) {
         const currUser = await getUser(user.username, user.misparIshi);
 
         if (currUser) {
@@ -64,9 +64,11 @@ const LandingPage = () => {
     }
     return null;
   };
-  const handleSetLocation = (latlong, city) => {
-    setCity(city);
-    setLatLong(latlong);
+  const handleSetLocation = (latlong, newCity) => {
+    if (newCity !== city) {
+      setCity(newCity);
+      setLatLong(latlong);
+    }
   };
   return (
     <div className={styles.container}>

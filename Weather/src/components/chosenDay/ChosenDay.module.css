@@ -21,6 +21,7 @@
   height: 25rem;
 }
 .details {
+    flex: 3;
   margin-left: 20%;
 }
 .day {

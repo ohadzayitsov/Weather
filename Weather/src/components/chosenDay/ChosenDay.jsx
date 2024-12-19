@@ -1,5 +1,4 @@
 import styles from "./ChosenDay.module.css";
-import { useContext, useEffect, useState } from "react";
 import icons from "../../utils/icons/icons";
 
 const ChosenDay = ({backgroundColor,icon,day,city,temp,desc}) => {
