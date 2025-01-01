@@ -34,6 +34,7 @@ export const SearchProvider = ({ children }) => {
   const [selectedSearch, setSelectedSearch] = useState("");
 
   const updateSelectedSearch = (value) => setSelectedSearch(value);
+
   const updateLastSearches = (newSearch) => {
     setLastSearches((prevSearches) => {
       if (prevSearches.length > 0 && prevSearches[0].city === newSearch.city) {
@@ -49,14 +50,19 @@ export const SearchProvider = ({ children }) => {
     );
   };
   const removeSearch = (index) => {
-    if (selectedSearch.city === lastSearches[index].city) {
+    const isSelected = selectedSearch.city === lastSearches[index].city;
+  
+    if (isSelected) {
       updateSelectedSearch("");
     }
     removeSearchByIndex(index);
-    if (!selectedSearch) {
-      updateSelectedSearch(lastSearches[0]);
+    if (isSelected && lastSearches.length > 1) {
+      const nextIndex = (index + 1) % lastSearches.length;
+      updateSelectedSearch(lastSearches[nextIndex]);
     }
   };
+  
+
   return (
     <SearchContext.Provider
       value={{
@@ -76,7 +82,7 @@ export const SearchProvider = ({ children }) => {
 export const WeatherContext = createContext();
 
 export const WeatherProvider = ({ children }) => {
-  const [dailyWeather, setDailyWeather] = useState({ city: '', days: [] });
+  const [dailyWeather, setDailyWeather] = useState({ city: "", days: [] });
 
   const updateDailyWeather = (value) => setDailyWeather(value);
 

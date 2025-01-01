@@ -27,12 +27,13 @@ const History = () => {
     return lastSearches[index].city === selectedSearch.city;
   };
   const onFavorite = (index) => {
-
+    updateSelectedSearch(lastSearches[index]);
   };
-
   const onUnfavorite = (index) => {
-    
+    const nextIndex = (index + 1) % lastSearches.length;
+    updateSelectedSearch(lastSearches[nextIndex]);
   };
+
   return (
     <div className={styles.body}>
       {lastSearches.length > 0 ? (
