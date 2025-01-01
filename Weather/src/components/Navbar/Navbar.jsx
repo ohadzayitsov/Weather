@@ -4,12 +4,13 @@ import {
   faTemperatureFull,
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../utils/context";
+import { SearchContext, UserContext } from "../../utils/context";
 
 const Navbar = () => {
   const { userDisplayName, updateUserDisplayName } = useContext(UserContext);
+  const { lastSearches, updateLastSearches } = useContext(SearchContext);
   const navigate = useNavigate();
   const handleLogOut = () => {
     localStorage.removeItem("user");
@@ -25,15 +26,30 @@ const Navbar = () => {
         Weather
       </div>
       {userDisplayName ? (
+        <div className={styles.navigation}>
+          <Link to="/home" className={styles.link}>
+            ראשי
+          </Link>
+          <Link
+            to={lastSearches.length > 0 ? "/history" : "#"}
+            className={styles.link}
+          >
+            היסטוריה - {lastSearches.length}{" "}
+          </Link>
+          <Link to="/mador" className={styles.link}>
+            מדור
+          </Link>
+        </div>
+      ) : null}
+
+      {userDisplayName ? (
         <div className={styles.loggedIn}>
           <p className={styles.username}>{"שלום, " + userDisplayName} </p>{" "}
           <div className={styles.logOut} onClick={handleLogOut}>
             <FontAwesomeIcon icon={faRightFromBracket} />
           </div>
         </div>
-      ) : (
-        <p> </p>
-      )}
+      ) : null}
     </div>
   );
 };

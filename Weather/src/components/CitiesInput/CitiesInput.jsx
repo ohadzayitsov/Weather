@@ -1,24 +1,44 @@
 import axios from "axios";
 import styles from "./CitiesInput.module.css";
 import { useContext, useEffect, useRef, useState } from "react";
-import { UserContext, SearchContext } from "../../utils/context";
+import {
+  UserContext,
+  SearchContext,
+  WeatherContext,
+} from "../../utils/context";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const CitiesInput = ({ handleSetLocation }) => {
+const CitiesInput = ({ setIsLoaded }) => {
   const { username, updateusername } = useContext(UserContext);
   const { misparIshi, updateMisparIshi } = useContext(UserContext);
-  const { lastSearches, updateLastSearches } = useContext(SearchContext);
+
+  const { selectedSearch, updateSelectedSearch } = useContext(SearchContext);
   const [searchTerm, setSearchTerm] = useState("Jerusalem");
   const [cities, setCities] = useState([]);
+
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (username && misparIshi) {
-      handleIconClick(searchTerm);
-      handleSetCities();
+    if (selectedSearch) {
+      setSearchTerm(selectedSearch.city);
     }
+  }, [selectedSearch]);
+  useEffect(() => {
+    if (cities.length > 0 && searchTerm !== selectedSearch.city) {
+      handleSelectCity();
+    }
+  }, [cities]);
+  useEffect(() => {
+    const fetchCities = async () => {
+      if (username && misparIshi) {
+        await handleSetCities();
+        setIsLoaded(true);
+      }
+    };
+
+    fetchCities();
   }, [username, misparIshi]);
 
   const handleSetCities = async () => {
@@ -45,7 +65,7 @@ const CitiesInput = ({ handleSetLocation }) => {
     setIsDropdownVisible(false);
   };
 
-  const handleIconClick = async () => {
+  const handleSelectCity = async () => {
     try {
       const res = await axios.get(
         `http://localhost:3001/cities/${searchTerm}`,
@@ -57,11 +77,22 @@ const CitiesInput = ({ handleSetLocation }) => {
         }
       );
       if (res.status === 200) {
-        handleSetLocation(res.data, searchTerm);
-        updateLastSearches(searchTerm);
+        const city = cities.find((city) => city.city === searchTerm);
+
+        if (city) {
+          updateSelectedSearch({ ...city, latLong: res.data });
+        }
       }
     } catch (error) {
       console.error("Failed to fetch city data:", error);
+    }
+  };
+  const handleIconClick = async () => {
+    if (
+      selectedSearch.city !== searchTerm &&
+      cities.find((city) => city.city === searchTerm)
+    ) {
+      handleSelectCity();
     }
   };
 

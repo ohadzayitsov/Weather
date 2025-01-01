@@ -1,30 +1,38 @@
 import styles from "./WeatherForcast.module.css";
 import WeatherCard from "../../components/WeatherCard/WeatherCard";
 import ChosenDay from "../../components/chosenDay/chosenDay";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import axios from "axios";
+import { SearchContext } from "../../utils/context";
 
-const WeatherForecast = ({ latlong, city }) => {
-  const [days, setDays] = useState([]);
+const WeatherForecast = () => {
+  const { selectedSearch, updateSelectedSearch } = useContext(SearchContext);
+  const { lastSearches, updateLastSearches } = useContext(SearchContext);
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const res = await axios.get(
-          `https://api.openweathermap.org/data/3.0/onecall?lat=${latlong.latitude}&lon=${latlong.longitude}&units=metric&appid=${process.env.ONE_CALL_API_KEY}&exclude=minutely,hourly,alerts&lang=he`
-        );
-        if (res.status === 200) {
-          setDays(res.data.daily);
+        if (!selectedSearch?.days || selectedSearch.days.length === 0) {
+          const res = await axios.get(
+            `https://api.openweathermap.org/data/3.0/onecall?lat=${selectedSearch.latLong.latitude}&lon=${selectedSearch.latLong.longitude}&units=metric&appid=${process.env.ONE_CALL_API_KEY}&exclude=minutely,hourly,alerts&lang=he`
+          );
+          if (res.status === 200) {
+            updateSelectedSearch({ ...selectedSearch, days: res.data.daily });
+            updateLastSearches({ ...selectedSearch, days: res.data.daily });
+          }
         }
       } catch (error) {
-        console.log("error: " + error.message);
+        console.error("Error fetching weather data:", error.message);
       }
     };
-
-    fetchWeather();
-  }, [latlong, city]);
-
+  
+    if (selectedSearch?.latLong && (!selectedSearch?.days || selectedSearch.days.length === 0)) {
+      fetchWeather();
+    }
+  }, [selectedSearch, updateSelectedSearch, updateLastSearches]);
+  
   const getIcon = (day) => {
+    if (!day) return;
     let icon;
     if (day.temp.day > 29) {
       icon = "sunny";
@@ -37,6 +45,7 @@ const WeatherForecast = ({ latlong, city }) => {
     }
     return icon;
   };
+
   const getHebrewDayDescription = (timestamp) => {
     const inputDate = new Date(timestamp * 1000);
     const today = new Date();
@@ -59,9 +68,11 @@ const WeatherForecast = ({ latlong, city }) => {
         return `בעוד ${dayDifference} ימים`;
     }
   };
+
   const getTemp = (temp) => {
     return Math.round((temp.max + temp.eve) / 2);
   };
+
   const getBackgroundColor = (day) => {
     const feelsLike = Object.values(day.feels_like);
     const temps = Object.values(day.temp);
@@ -86,18 +97,18 @@ const WeatherForecast = ({ latlong, city }) => {
 
   return (
     <div className={styles.body}>
-      {days[0] ? (
+      {selectedSearch?.days?.length > 0 ? (
         <div>
           <ChosenDay
-            icon={getIcon(days[0])}
-            day={getHebrewDayDescription(days[0].dt)}
-            desc={days[0].weather[0].description}
-            temp={getTemp(days[0].temp)}
-            city={city}
-            backgroundColor={getBackgroundColor(days[0])}
+            icon={getIcon(selectedSearch.days[0])}
+            day={getHebrewDayDescription(selectedSearch.days[0].dt)}
+            desc={selectedSearch.days[0].weather[0].description}
+            temp={getTemp(selectedSearch.days[0].temp)}
+            city={selectedSearch.city}
+            backgroundColor={getBackgroundColor(selectedSearch.days[0])}
           />
           <div className={styles.forecastContainer}>
-            {days.map((day, index) =>
+            {selectedSearch.days.map((day, index) =>
               0 < index && index < 5 ? (
                 <WeatherCard
                   day={getHebrewDayDescription(day.dt)}

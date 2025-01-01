@@ -1,0 +1,22 @@
+.body{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.btn{
+    height: 10rem;
+    width: 20rem;
+    border-radius: 20px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.646);
+    box-shadow: 1px 1px 1px 1px rgba(93, 92, 92, 0.251);
+    cursor: pointer;
+    font-size: 30px;
+    color: rgb(120, 120, 117);
+    font-weight: bold;
+    margin-top: 20rem;
+}
+.btn:hover{
+    background-color: rgba(255, 255, 255, 0.756);
+}

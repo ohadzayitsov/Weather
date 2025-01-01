@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./LandingPage.module.css";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../utils/context";
+import { SearchContext, UserContext } from "../../utils/context";
 import axios from "axios";
 import WeatherForecast from "../WeatherForecast/WeatherForcast";
 import CitiesInput from "../../components/CitiesInput/CitiesInput";
-
+import { RotatingLines } from "react-loader-spinner";
 const LandingPage = () => {
   const { userDisplayName, updateUserDisplayName } = useContext(UserContext);
   const { misparIshi, updateMisparIshi } = useContext(UserContext);
   const { username, updateUsername } = useContext(UserContext);
-  const [latlong, setLatLong] = useState("");
-  const [city, setCity] = useState("");
+  const {selectedSearch,updateSelectedSearch} = useContext(SearchContext);
+  const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchUser = async () => {
@@ -21,10 +21,9 @@ const LandingPage = () => {
         navigate("/login");
         return;
       }
-
       const user = JSON.parse(userString);
 
-      if (user) {
+      if (user && (!username || !misparIshi)) {
         const currUser = await getUser(user.username, user.misparIshi);
 
         if (currUser) {
@@ -64,17 +63,30 @@ const LandingPage = () => {
     }
     return null;
   };
-  const handleSetLocation = (latlong, city) => {
-    setCity(city);
-    setLatLong(latlong);
-  };
+
+  
   return (
     <div className={styles.container}>
-      <CitiesInput handleSetLocation={handleSetLocation} />
-      {city && latlong ? (
-        <WeatherForecast latlong={latlong} city={city} />
+      <CitiesInput
+        setIsLoaded={setIsLoaded}
+      />
+      {isLoaded ? (
+        <div>
+          {selectedSearch ? (
+            <WeatherForecast />
+          ) : null}
+        </div>
       ) : (
-        <div></div>
+        <div className={styles.loading}>
+          
+          <RotatingLines
+            strokeColor="blue"
+            strokeWidth="5"
+            animationDuration="0.75"
+            width="200"
+            visible={true}
+          />
+        </div>
       )}
     </div>
   );

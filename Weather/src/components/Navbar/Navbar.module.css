@@ -5,21 +5,23 @@
   align-items: center;
   width: 100%;
   padding: 20px;
-  background-color: #ffffff;
+  background-color: #130f3c;
+  position: sticky;
 }
 .navTitle {
     margin-left: 5%;
   font-size: 25px;
-  color: #979797;
+  color: #dbdbdb;
   font-weight: bold;
 }
 
 .logOut {
   cursor: pointer;
   font-size: 25px;
-  color: #979797;
+  color: #dbdbdb;
 }
 .username{
+    color: #dbdbdb;
     width:8rem;
 }
 .loggedIn{
@@ -27,4 +29,19 @@
     flex-direction: row;
     align-items: center;
     margin-right: 5%;
+}
+.navigationContainer{
+    
+    display: flex;
+    flex-direction: row;
+}
+.link{
+    margin: 10px;
+    text-decoration: none;
+    color: #dbdbdb;
+    font-size: larger;
+    cursor: pointer;
+}
+.link:hover{
+    color: white;
 }

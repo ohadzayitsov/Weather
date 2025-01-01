@@ -2,15 +2,14 @@ import React, { useContext, useState } from "react";
 import styles from "./Login.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../../utils/context";
+
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [misparIshi, setmisparIshi] = useState("");
   const { userDisplayName, updateUserDisplayName } = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState("");
-
 
   const isInputValid = () => {
     setErrorMessage("");
@@ -33,22 +32,32 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isInputValid()) {
-      const res = await axios.post(
-        "http://localhost:3001/login",
-        { username, misparIshi },
-        {
-          headers: {
-            user_name: username,
-            user_mispar_ishi: misparIshi,
-          },
+      try {
+        const res = await axios.post(
+          "http://localhost:3001/login",
+          { username, misparIshi },
+          {
+            headers: {
+              user_name: username,
+              user_mispar_ishi: misparIshi,
+            },
+          }
+        );
+        if (res.status === 200) {
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              username: res.data.User_Name,
+              misparIshi: res.data.Mispar_Ishi,
+            })
+          );
+          updateUserDisplayName(`${res.data.First_Name} ${res.data.Last_Name}`);
+          navigate("/home");
+        } else {
+          setErrorMessage("שגיאה בהתחברות");
         }
-      );
-      if (res.status === 200) {
-        localStorage.setItem("user", JSON.stringify({username:res.data.User_Name,misparIshi:res.data.Mispar_Ishi}));
-        updateUserDisplayName(`${res.data.First_Name} ${res.data.Last_Name}`);
-        navigate("/home");
-      } else {
-        setErrorMessage("שגיאה בהתחברות");
+      } catch (error) {
+        setErrorMessage(error.message);
       }
     }
   };
