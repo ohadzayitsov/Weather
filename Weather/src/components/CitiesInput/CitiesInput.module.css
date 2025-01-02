@@ -6,6 +6,7 @@
     width: 30rem;
     margin: 20px auto;
     font-family: Arial, sans-serif;
+    z-index: 2;
   }
   
   .searchInput {

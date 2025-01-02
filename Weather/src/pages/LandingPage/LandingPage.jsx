@@ -6,13 +6,15 @@ import axios from "axios";
 import WeatherForecast from "../WeatherForecast/WeatherForcast";
 import CitiesInput from "../../components/CitiesInput/CitiesInput";
 import { RotatingLines } from "react-loader-spinner";
+
 const LandingPage = () => {
   const { userDisplayName, updateUserDisplayName } = useContext(UserContext);
   const { misparIshi, updateMisparIshi } = useContext(UserContext);
   const { username, updateUsername } = useContext(UserContext);
-  const {selectedSearch,updateSelectedSearch} = useContext(SearchContext);
+  const { selectedSearch, updateSelectedSearch } = useContext(SearchContext);
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchUser = async () => {
       const userString = localStorage.getItem("user");
@@ -39,6 +41,7 @@ const LandingPage = () => {
 
     fetchUser();
   }, [updateUserDisplayName]);
+
   const getUser = async (username, misparIshi) => {
     try {
       const res = await axios.post(
@@ -64,30 +67,24 @@ const LandingPage = () => {
     return null;
   };
 
-  
   return (
     <div className={styles.container}>
-      <CitiesInput
-        setIsLoaded={setIsLoaded}
-      />
-      {isLoaded ? (
-        <div>
-          {selectedSearch ? (
-            <WeatherForecast />
-          ) : null}
-        </div>
-      ) : (
-        <div className={styles.loading}>
-          
-          <RotatingLines
-            strokeColor="blue"
-            strokeWidth="5"
-            animationDuration="0.75"
-            width="200"
-            visible={true}
-          />
-        </div>
-      )}
+      <CitiesInput setIsLoaded={setIsLoaded} />
+      <div className={styles.weatherContainer}>
+        {isLoaded ? (
+          selectedSearch ? <WeatherForecast /> : null
+        ) : (
+          <div className={styles.loading}>
+            <RotatingLines
+              strokeColor="blue"
+              strokeWidth="5"
+              animationDuration="0.75"
+              width="200"
+              visible={true}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

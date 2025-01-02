@@ -98,7 +98,7 @@ const WeatherForecast = () => {
   return (
     <div className={styles.body}>
       {selectedSearch?.days?.length > 0 ? (
-        <div>
+        <div className={styles.center}>
           <ChosenDay
             icon={getIcon(selectedSearch.days[0])}
             day={getHebrewDayDescription(selectedSearch.days[0].dt)}

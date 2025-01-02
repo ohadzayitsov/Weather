@@ -6,12 +6,12 @@ const ChosenDay = ({backgroundColor,icon,day,city,temp,desc}) => {
   return (
     <div className={styles.body} style={{backgroundColor:backgroundColor}}>
       <div className={styles.content}>
-       {icons[icon]('180px')}
+       {icons[icon]('9vw')}
         <div className={styles.details}>
             <div className={styles.day}>{day}</div>
             <div className={styles.city}>{city}</div>
             <div className={styles.temp}> {temp+"C° "+ `:'טמפ`}</div>
-            <div className={styles.desc}>{desc}</div>
+            <div className={styles.descs}>{desc}</div>
         </div>
       </div>
     </div>

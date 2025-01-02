@@ -3,6 +3,13 @@
     flex-direction: row;
     direction: ltr;
     position: absolute;
-    top: 36rem;
-    right: 32rem;
+    top: 54%;
+    
+}
+.center{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-items: center;
 }
