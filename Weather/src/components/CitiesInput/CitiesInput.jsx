@@ -4,7 +4,6 @@ import { useContext, useEffect, useRef, useState } from "react";
 import {
   UserContext,
   SearchContext,
-  WeatherContext,
 } from "../../utils/context";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

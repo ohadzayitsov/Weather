@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./Mador.module.css";
 import MadorPopUp from "./MadorModal";
-import { UserContext } from "../../utils/context";
+import { SoldiersProvider, UserContext } from "../../utils/context";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -39,6 +39,7 @@ const Mador = () => {
     }
   }, [userDisplayName]);
   return (
+    <SoldiersProvider>
     <div className={styles.body}>
       {soldiers ? (
         <button className={styles.btn} onClick={() => setIsOpen(true)}>
@@ -54,6 +55,7 @@ const Mador = () => {
         />
       ) : null}
     </div>
+    </SoldiersProvider>
   );
 };
 

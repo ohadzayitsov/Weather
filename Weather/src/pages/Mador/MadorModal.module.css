@@ -1,21 +1,29 @@
 .darkBG {
-  background-color: rgba(0, 0, 0, 0.379);
-  max-width: 100vw;
-  max-height: 100vh;
-  z-index: 0;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.203);
+  z-index: -1;
 }
-
+.modal::-webkit-scrollbar {
+  display: none;
+}
 .centered {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input {
+  direction: rtl;
+}
 .modal {
   min-width: 30rem;
   width: 45vw;
@@ -30,6 +38,10 @@
 }
 
 .header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
   padding: 15px 0px 20px 15px;
   color: black;
 }
@@ -132,6 +144,39 @@
   flex-direction: row-reverse;
   cursor: pointer;
   padding-right: 1rem;
+  position: relative;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.295);
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  right: 100%;
+}
+
+.option {
+  border-bottom: 1px solid rgb(225, 225, 225);
+  text-align: right;
+  padding-right: 10px;
+  font-size: 18px;
+  padding: 10px 10px 10px 40px;
+  cursor: pointer;
+  color: gray;
+  width: 10rem;
+}
+
+.option:hover {
+  background-color: rgb(233, 232, 232);
+  color: black;
+}
+
+.selectedOption {
+  color: black;
 }
 
 .soldiersContainer {
@@ -160,32 +205,7 @@
   margin-right: 40px;
   margin-left: 20px;
 }
-.options {
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border-radius: 5px;
-  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.295);
-  z-index: 2;
-  position: absolute;
-  left: 68%;
-}
-.option {
-  border-bottom: 1px solid rgb(225, 225, 225);
-  text-align: right;
-  padding-right: 10px;
-  font-size: 18px;
-  padding: 10px 10px 10px 40px;
-  cursor: pointer;
-  color: gray;
-}
-.option:hover {
-  background-color: rgb(233, 232, 232);
-  color: black;
-}
-.selectedOption {
-  color: black;
-}
+
 .btnsContainer {
   display: flex;
   flex-direction: row;
@@ -215,13 +235,13 @@
   background-color: rgb(197, 39, 39);
 }
 .btnDisabled {
-    margin: 10px;
-    width: 150px;
-    height: 50px;
-    font-size: 17px;
-    border: 2px solid rgb(165, 162, 162);
-    color: white;
-    background-color: rgb(194, 192, 192);
-    border-radius: 10px;
-    cursor: not-allowed;
-  }
+  margin: 10px;
+  width: 150px;
+  height: 50px;
+  font-size: 17px;
+  border: 2px solid rgb(165, 162, 162);
+  color: white;
+  background-color: rgb(194, 192, 192);
+  border-radius: 10px;
+  cursor: not-allowed;
+}

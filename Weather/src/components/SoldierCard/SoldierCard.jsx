@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./SoldierCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -6,6 +6,7 @@ import man from "../../assets/man.png";
 import clsx from "clsx";
 import { Woman } from "../../utils/icons/icons";
 import { Katzin } from "../../utils/icons/icons";
+import { SoldiersContext } from "../../utils/context";
 const SoldierCard = ({
   firstName,
   lastName,
@@ -15,16 +16,16 @@ const SoldierCard = ({
   rank,
   isKatzin,
   misparIshi,
-  selectedSoldiers,
-  setSelectedSoldiers,
+ 
 }) => {
+    const {selectedSoldiers,updateSelectedSoldiers} = useContext(SoldiersContext)
   const handleClickSoldier = () => {
     if (selectedSoldiers.find((soldier) => soldier.Mispar_Ishi === misparIshi)) {
-      setSelectedSoldiers(
+        updateSelectedSoldiers(
         selectedSoldiers.filter((soldier) => soldier.Mispar_Ishi !== misparIshi)
       );
     } else {
-      setSelectedSoldiers((prev) => [...prev, { Mispar_Ishi:misparIshi }]);
+        updateSelectedSoldiers((prev) => [...prev, { Mispar_Ishi:misparIshi }]);
     }
   };
 

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./SoldiersList.module.css";
 import SoldierCard from "../SoldierCard/SoldierCard";
 
-const SoldiersList = ({ soldiers, title ,selectedSoldiers,setSelectedSoldiers}) => {
+const SoldiersList = ({ soldiers, title }) => {
   
   const sortedSoldiers = [...soldiers].sort((curr, next) => {
     const firstNameComparison = curr.First_Name.localeCompare(next.First_Name, "he");
@@ -30,8 +30,6 @@ const SoldiersList = ({ soldiers, title ,selectedSoldiers,setSelectedSoldiers}) 
               age={soldier.Age}
               gender={soldier.Gender}
               misparIshi={soldier.Mispar_Ishi}
-              selectedSoldiers={selectedSoldiers}
-              setSelectedSoldiers={setSelectedSoldiers}
             />
           ))}
         </div>

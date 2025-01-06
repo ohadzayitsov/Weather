@@ -79,21 +79,22 @@ export const SearchProvider = ({ children }) => {
   );
 };
 
-export const WeatherContext = createContext();
 
-export const WeatherProvider = ({ children }) => {
-  const [dailyWeather, setDailyWeather] = useState({ city: "", days: [] });
+export const SoldiersContext = createContext();
 
-  const updateDailyWeather = (value) => setDailyWeather(value);
+export const SoldiersProvider = ({ children }) => {
+  const [selectedSoldiers, setSelectedSoldiers] = useState([]);
+ 
+  const updateSelectedSoldiers = (value) => setSelectedSoldiers(value);
 
   return (
-    <WeatherContext.Provider
+    <SoldiersContext.Provider
       value={{
-        dailyWeather,
-        updateDailyWeather,
+        selectedSoldiers,
+        updateSelectedSoldiers,
       }}
     >
       {children}
-    </WeatherContext.Provider>
+    </SoldiersContext.Provider>
   );
 };

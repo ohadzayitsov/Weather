@@ -2,9 +2,9 @@ import styles from "./MadorModal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faX } from "@fortawesome/free-solid-svg-icons";
 import Clock from "../../components/Clock/Clock";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { UserContext } from "../../utils/context";
+import { SoldiersContext, SoldiersProvider, UserContext } from "../../utils/context";
 import SoldiersList from "../../components/SoldiersList/SoldiersList";
 import { Arrows } from "../../utils/icons/icons";
 import clsx from "clsx";
@@ -19,8 +19,31 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
   const [isOptions, setIsOptions] = useState(false);
   const [tempSoldiers, setTempSoldiers] = useState([]);
   const [currOption, setCurrOption] = useState("עיר");
-  const [selectedSoldiers, setSelectedSoldiers] = useState([]);
+  // const [selectedSoldiers, setSelectedSoldiers] = useState([]);
+  const {selectedSoldiers,updateSelectedSoldiers} = useContext(SoldiersContext);
   const options = ["עיר", "מיקום עיר בארץ", "מין", "תפקיד + דרגה"];
+
+  const orderByRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (orderByRef.current && !orderByRef.current.contains(event.target)) {
+        setIsOptions(false); 
+      }
+    };
+
+    const handleScroll = () => {
+      setIsOptions(false); 
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     setTempSoldiers(soldiers);
@@ -124,7 +147,7 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
   const groupedSoldiers = groupSoldiers(currOption);
 
   const unselectAllSoldiers = () => {
-    setSelectedSoldiers([]);
+    updateSelectedSoldiers([]);
   };
   const deleteSelectedSoldiers = () => {
     setTempSoldiers(
@@ -135,16 +158,17 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
           )
       )
     );
-    setSelectedSoldiers([]);
+    updateSelectedSoldiers([]);
   };
   const selectAllSoldiers = () => {
-    setSelectedSoldiers((prev) => [...prev, ...tempSoldiers]);
+    updateSelectedSoldiers((prev) => [...prev, ...tempSoldiers]);
   };
   return (
+    
     <div className={styles.body}>
       <div className={styles.darkBG} onClick={() => setIsOpen(false)} />
       <div className={styles.centered}>
-        <div className={styles.modal}>
+        <div className={styles.modal} >
           <div className={styles.header}>
             <FontAwesomeIcon
               className={styles.xIcon}
@@ -176,7 +200,7 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
             <input
               onChange={(e) => setMisparIshiInput(e.target.value)}
               value={misparIshiInput}
-              type="text"
+              type="number"
               className={styles.input}
               placeholder="מספר אישי"
             />
@@ -218,7 +242,7 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
           </button>
 
           <div className={styles.orderContainer}>
-            <div className={styles.orderBy} onClick={toggleOptions}>
+            <div className={styles.orderBy} onClick={toggleOptions}  ref={orderByRef}>
               <span
                 style={{
                   fontWeight: isOptions ? "bold" : "normal",
@@ -227,8 +251,7 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
                 סדר לפי: {currOption}
               </span>
               <FontAwesomeIcon icon={faChevronDown} />
-            </div>
-            {isOptions && (
+              {isOptions && (
               <div className={styles.options}>
                 {options.map((option) => (
                   <div
@@ -247,6 +270,8 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
                 ))}
               </div>
             )}
+            </div>
+            
           </div>
           <hr className={styles.hr} />
           <div className={styles.soldiersContainer}>
@@ -256,7 +281,7 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
                 title={group}
                 soldiers={groupSoldiers}
                 selectedSoldiers={selectedSoldiers}
-                setSelectedSoldiers={setSelectedSoldiers}
+                updateSelectedSoldiers={updateSelectedSoldiers}
               />
             ))}
           </div>
@@ -264,11 +289,11 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
           <div className={styles.btnsContainer}>
             <button
               className={
-                tempSoldiers.length > 0
+              JSON.stringify(tempSoldiers) !== JSON.stringify(soldiers)
                   ? styles.addBtn
                   : styles.addBtnDisabled
               }
-              disabled={tempSoldiers.length === 0}
+              disabled={JSON.stringify(tempSoldiers) === JSON.stringify(soldiers)}
               onClick={saveSoldiers}
             >
               שמירה
@@ -293,6 +318,7 @@ const MadorModal = ({ setIsOpen, soldiers, setSoldiers }) => {
         </div>
       </div>
     </div>
+   
   );
 };
 
